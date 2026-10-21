@@ -1,0 +1,12 @@
+# Fichiers générés
+build/
+*.apk
+*.apk.idsig
+*.sha256
+
+# Clés de signature : JAMAIS dans le dépôt
+*.jks
+*.keystore
+*.p12
+*.base64.txt
+pass*.txt

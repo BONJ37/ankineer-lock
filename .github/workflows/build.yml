@@ -1,0 +1,24 @@
+# À chaque envoi de code : compilation + test de fumée (clé de test, rien n'est publié).
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Outils Android (paquets Ubuntu)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q aapt zipalign apksigner dalvik-exchange android-sdk-platform-23 \
+            libasm-java libandroid-json-java python3-pil
+      - name: Compilation + test de fumée
+        run: OUT=Ankineer-Lock-test.apk bash build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk-de-test
+          path: Ankineer-Lock-test.apk
+          retention-days: 7

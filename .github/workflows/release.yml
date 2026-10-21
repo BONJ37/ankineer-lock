@@ -1,0 +1,52 @@
+# Fabrique, teste et signe l'APK quand une Release est publiée, puis l'attache à la Release.
+# Secrets du dépôt nécessaires (Settings → Secrets and variables → Actions) :
+#   KEYSTORE_BASE64  contenu du fichier ankineer-release.jks encodé en base64
+#   KEYSTORE_PASSWORD mot de passe de la clé
+name: Release APK
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release (tag) à laquelle attacher l'APK, ex. v1.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Outils Android (paquets Ubuntu)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q aapt zipalign apksigner dalvik-exchange android-sdk-platform-23 \
+            libasm-java libandroid-json-java python3-pil
+
+      - name: Clé de publication
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then echo "Secret KEYSTORE_BASE64 manquant"; exit 1; fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+
+      - name: Compilation + test de fumée + signature
+        env:
+          ANKINEER_KEYSTORE: ${{ runner.temp }}/release.jks
+          ANKINEER_KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          OUT="Ankineer-Lock-$TAG.apk" bash build.sh
+          sha256sum "Ankineer-Lock-$TAG.apk" > "Ankineer-Lock-$TAG.apk.sha256"
+          rm -f "$RUNNER_TEMP/release.jks"
+
+      - name: Attacher l'APK à la Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: gh release upload "$TAG" "Ankineer-Lock-$TAG.apk" "Ankineer-Lock-$TAG.apk.sha256" --clobber

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ankineer Lock</string>
+    <string name="a11y_label">Ankineer – Verrou Anki</string>
+    <string name="a11y_description">Ankineer utilise ce service pour savoir quelle application est au premier plan : il bloque celles que tu n\'as pas autorisées tant que ton objectif Anki du jour n\'est pas atteint, mesure ton temps d\'étude dans AnkiDroid et affiche le widget de progression. Le contenu des écrans n\'est ni lu, ni enregistré, ni envoyé.</string>
+    <string name="w_rings">Ankineer · Anneaux de progression</string>
+    <string name="w_mini">Ankineer · Mini anneau</string>
+    <string name="w_bars">Ankineer · Barres cartes · minutes</string>
+    <string name="w_week">Ankineer · Semaine et série</string>
+</resources>

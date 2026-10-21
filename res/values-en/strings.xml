@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ankineer Lock</string>
+    <string name="a11y_label">Ankineer – Anki Lock</string>
+    <string name="a11y_description">Ankineer Lock uses this service to know which app is in the foreground: it blocks the apps you haven\'t allowed until your daily Anki goal is reached, measures your study time in AnkiDroid and shows the progress circle. Screen content is never read, stored or sent.</string>
+    <string name="w_rings">Ankineer · Progress rings</string>
+    <string name="w_mini">Ankineer · Mini ring</string>
+    <string name="w_bars">Ankineer · Cards · minutes bars</string>
+    <string name="w_week">Ankineer · Week and streak</string>
+</resources>
