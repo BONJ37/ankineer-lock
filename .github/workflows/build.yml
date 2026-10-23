@@ -1,0 +1,24 @@
+# On every push: build + smoke test (test key, nothing is published).
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Outils Android (paquets Ubuntu)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q aapt zipalign apksigner dalvik-exchange android-sdk-platform-23 \
+            libasm-java libandroid-json-java python3-pil
+      - name: Build + smoke test
+        run: OUT=Ankineer-Lock-test.apk bash build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-apk
+          path: Ankineer-Lock-test.apk
+          retention-days: 7

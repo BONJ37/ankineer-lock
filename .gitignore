@@ -1,0 +1,15 @@
+# Fichiers générés
+build/
+*.apk
+*.apk.idsig
+*.sha256
+
+# Clés de signature : JAMAIS dans le dépôt
+*.jks
+*.keystore
+*.p12
+*.base64.txt
+pass*.txt
+
+# Aperçu généré par tools/make_icon.py à chaque compilation
+icon_preview.png
